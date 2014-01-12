@@ -1,0 +1,43 @@
+extends ../layouts/default
+
+block main
+  h1= title
+  hr
+
+block content
+  - var action = '/artworks'
+  - action += artwork.isNew? '' : '/' + artwork.id
+
+  .row
+    .col-md-8
+      form.form-horizontal(method="post", action=action, enctype="multipart/form-data", role="form")
+
+        input(type="hidden", name="_csrf", value="#{csrf_token}")
+
+        - if (!artwork.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        .form-group
+          label.col-sm-2.control-label(for='title') Title
+          .col-sm-10
+            input.form-control#title(type='text', name="title", value=artwork.title, placeholder='Enter the title')
+
+        .form-group
+          label.col-sm-2.control-label(for='file') Image
+          .col-sm-10
+            input.form-control#file(type='file', name="image[]")
+
+        .form-group
+          label.col-sm-2.control-label(for='tags') Tags
+          .col-sm-10
+            input.form-control#tags(type='text', name="tags", value=artwork.tags, placeholder='Enter the tags')
+
+        .form-group
+          .col-sm-offset-2.col-sm-10
+            button.btn.btn-primary(type='submit') Save
+            | &nbsp;
+            a.btn(href='/artworks', title="cancel") Cancel
+
+    .col-md-4
+      - if (!artwork.isNew && artwork.image && artwork.image.files && artwork.image.files.length)
+        img(src=artwork.image.cdnUri + "/mini_" + artwork.image.files[0])

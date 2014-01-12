@@ -33,7 +33,8 @@
     "nodemon": "latest",
     "mocha": "latest",
     "should": "latest",
-    "supertest": "latest"
+    "supertest": "latest",
+    "imager": "~0.2.3"
   },
   "keywords": [
     "mvc",

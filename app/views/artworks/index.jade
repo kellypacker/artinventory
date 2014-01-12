@@ -1,0 +1,37 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - if (artworks.length)
+    - each artwork in artworks
+      .artwork
+        h3
+          a(href='/artworks/'+artwork._id, title=artwork.title) #{artwork.title}
+
+        .meta
+          span.muted= formatDate(artwork.createdAt)
+
+          - if (artwork.user)
+            | &nbsp; - &nbsp;
+            span Author &nbsp;
+
+            - var name = artwork.user.name ? artwork.user.name : artwork.user.username
+
+            a(href="/users/"+artwork.user._id)= name
+
+          - if (artwork.tags)
+            | &nbsp; - &nbsp;
+            span Tags &nbsp;
+            - each tag in artwork.tags.split(',')
+              i.muted.fa.fa-tag &nbsp;
+              a.tag(href="/tags/"+tag)= tag
+              | &nbsp;&nbsp;
+
+    - if (pages > 1)
+      ul.pagination
+        != createPagination(pages, page)
+  - else
+    h4.muted No artworks.&nbsp;
+      a(href="/artworks/new") create one

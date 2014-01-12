@@ -9,7 +9,14 @@ var passportOptions = {
   failureRedirect: '/login'
 }
 
-// controllers
+/**
+ * Controllers
+ */
+
+// var users = require('../app/controllers/users')
+var artworks = require('../app/controllers/artworks')
+// var auth = require('./middlewares/authorization')
+
 var home = require('home')
 
 /**
@@ -18,6 +25,11 @@ var home = require('home')
 
 module.exports = function (app, passport) {
 
-  app.get('/', home.index)
+  // artworks routes
+  app.param('id', artworks.load)
+  app.get('/artworks', artworks.index)
+  app.get('/artworks/new', artworks.new)
 
+  // home route
+  app.get('/', artworks.index)
 }
