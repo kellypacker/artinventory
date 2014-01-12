@@ -1,5 +1,6 @@
 ## Art Inventory System
-## Node Express Mongoose
+
+Application to manage artworks.
 
 Based on the [Node Express Mongoose boilerplate application](https://github.com/madhums/node-express-mongoose/)
 
