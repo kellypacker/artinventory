@@ -122,9 +122,9 @@ ArtworkSchema.statics = {
 
   list: function (options, cb) {
     var criteria = options.criteria || {}
-
+    console.log(criteria)
     this.find(criteria)
-      .populate('title', 'title')
+      //.populate('title', 'title')
       .sort({'createdAt': -1}) // sort by date
       .limit(options.perPage)
       .skip(options.perPage * options.page)

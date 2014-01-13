@@ -1,6 +1,6 @@
 module.exports = {
   variants: {
-    artworks: {
+    artwork: {
       resize: {
         detail: "800x600"
       },
@@ -21,9 +21,9 @@ module.exports = {
 
   storage: {
     S3: {
-      key: 'API_KEY',
-      secret: 'SECRET',
-      bucket: 'BUCKET_NAME',
+      key: 'AKIAJGRRCEMUOFUXOHYQ',
+      secret: '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',
+      bucket: 'kellypackercom',
       region: 'REGION'
     }
   },

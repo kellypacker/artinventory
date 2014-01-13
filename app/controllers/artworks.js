@@ -36,7 +36,7 @@ exports.index = function(req, res){
   }
   Artwork.list(options, function(err, artworks) {
     console.log(err)
-    if (err) return res.render('505')
+    if (err) return res.render('500')
     Artwork.count().exec(function (err, count) {
       res.render('artworks/index', {
         title: 'Artwork',
@@ -53,9 +53,29 @@ exports.index = function(req, res){
  */
 
 exports.new = function(req, res){
-  console.log(new Artwork({}))
   res.render('artworks/new', {
     title: 'New Artwork',
     artwork: new Artwork({})
+  })
+}
+
+/**
+ * Create an article
+ */
+
+exports.create = function (req, res) {
+  var artwork = new Artwork(req.body)
+
+  artwork.uploadAndSave(req.files.image, function (err) {
+    if (!err) {
+      req.flash('success', 'Successfully created artwork!')
+      return res.redirect('/artworks/'+artwork._id)
+    }
+
+    res.render('artworks/new', {
+      title: 'New Artwork',
+      artwork: artwork,
+      errors: utils.errors(err.errors || err)
+    })
   })
 }

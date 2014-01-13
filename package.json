@@ -1,10 +1,10 @@
 {
-  "name": "node-express-mongoose",
-  "description": "A boilerplate application for express mongoose",
+  "name": "Art Inventory",
+  "description": "An application to keep track of artworks.",
   "version": "0.0.1",
   "author": {
-    "name": "Madhusudhan Srinivasa",
-    "email": "me@madhums.me"
+    "name": "Kelly Packer",
+    "email": ""
   },
   "engines": {
     "node": "0.10.x",
