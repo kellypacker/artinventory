@@ -38,7 +38,18 @@ var ArtworkSchema = new Schema({
     cdnUri: String,
     files: []
   },
-  createdAt  : {type : Date, default : Date.now}
+  createdAt  : {type : Date, default : Date.now},
+  medium: {type: String},
+  height: {type: Number},
+  width: {type: Number},
+  price: {type: Number},
+  availableOnEtsy: {type: Boolean},
+  etsyOptions: {type: String},
+  year: {type: Number},
+  sold: {type: Boolean},
+  saleNotes: {type: String},
+  notes: {type: String}
+
 })
 
 /**
@@ -122,13 +133,24 @@ ArtworkSchema.statics = {
 
   list: function (options, cb) {
     var criteria = options.criteria || {}
-    console.log(criteria)
     this.find(criteria)
       //.populate('title', 'title')
       .sort({'createdAt': -1}) // sort by date
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)
+  },
+
+  getMediums: ["acrylic on wood panel", "oil pastel on paper"],
+  getEtsyOptions: ["Giclée prints are available in my Etsy store", "Original artwork available in my Etsy store"],
+  getYears: function (argument) {
+    var years = [];
+    var startYear = 2001;
+    var currentYear = new Date().getFullYear();
+    for (var i = currentYear; i >= startYear; i--) {
+      years.push(i);
+    };
+    return years;
   }
 
 }

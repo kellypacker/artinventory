@@ -53,9 +53,14 @@ exports.index = function(req, res){
  */
 
 exports.new = function(req, res){
+  var artwork = new Artwork({});
+  console.log(Artwork.getMediums)
   res.render('artworks/new', {
     title: 'New Artwork',
-    artwork: new Artwork({})
+    artwork: artwork,
+    mediums: Artwork.getMediums,
+    etsyOptions: Artwork.getEtsyOptions,
+    years: Artwork.getYears()
   })
 }
 
@@ -87,7 +92,10 @@ exports.create = function (req, res) {
 exports.edit = function (req, res) {
   res.render('artworks/edit', {
     title: 'Edit ' + req.artwork.title,
-    artwork: req.artwork
+    artwork: req.artwork,
+    mediums: Artwork.getMediums,
+    etsyOptions: Artwork.getEtsyOptions,
+    years: Artwork.getYears()
   })
 }
 
