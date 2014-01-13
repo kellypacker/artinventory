@@ -4,6 +4,7 @@ block main
   h1= title
 
 block content
+  a(href="/artworks/new") new artwork
   - if (artworks.length)
     - each artwork in artworks
       .artwork
@@ -12,14 +13,6 @@ block content
 
         .meta
           span.muted= formatDate(artwork.createdAt)
-
-          - if (artwork.user)
-            | &nbsp; - &nbsp;
-            span Author &nbsp;
-
-            - var name = artwork.user.name ? artwork.user.name : artwork.user.username
-
-            a(href="/users/"+artwork.user._id)= name
 
           - if (artwork.tags)
             | &nbsp; - &nbsp;

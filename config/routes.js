@@ -30,6 +30,10 @@ module.exports = function (app, passport) {
   app.get('/artworks', artworks.index)
   app.get('/artworks/new', artworks.new)
   app.post('/artworks', artworks.create)
+  app.get('/artworks/:id', artworks.show)
+  app.get('/artworks/:id/edit', artworks.edit)
+  app.put('/artworks/:id', artworks.update)
+  app.del('/artworks/:id', artworks.destroy)
 
   // home route
   app.get('/', artworks.index)

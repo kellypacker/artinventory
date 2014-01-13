@@ -15,7 +15,7 @@ var extend = require('util')._extend;
 exports.load = function(req, res, next, id){
   // var User = mongoose.model('User')
   console.log("LOAD")
-  Artwork.load(id, function (err, article) {
+  Artwork.load(id, function (err, artwork) {
     if (err) return next('err')
     if (!artwork) return next(new Error('not found'))
     req.artwork = artwork
@@ -60,7 +60,7 @@ exports.new = function(req, res){
 }
 
 /**
- * Create an article
+ * Create an artwork
  */
 
 exports.create = function (req, res) {
@@ -77,5 +77,60 @@ exports.create = function (req, res) {
       artwork: artwork,
       errors: utils.errors(err.errors || err)
     })
+  })
+}
+
+/**
+ * Edit an artwork
+ */
+
+exports.edit = function (req, res) {
+  res.render('artworks/edit', {
+    title: 'Edit ' + req.artwork.title,
+    artwork: req.artwork
+  })
+}
+
+/**
+ * Update artwork
+ */
+
+exports.update = function(req, res){
+  var artwork = req.artwork
+  artwork = extend(artwork, req.body)
+
+  artwork.uploadAndSave(req.files.image, function(err) {
+    if (!err) {
+      return res.redirect('/artworks/')
+    }
+
+    res.render('artworks/edit', {
+      title: 'Edit Article',
+      artwork: artwork,
+      errors: err.errors
+    })
+  })
+}
+
+/**
+ * Show
+ */
+
+exports.show = function(req, res){
+  res.render('artworks/show', {
+    title: req.artwork.title,
+    artwork: req.artwork
+  })
+}
+
+/**
+ * Delete an artwork
+ */
+
+exports.destroy = function(req, res){
+  var artwork = req.artwork
+  artwork.remove(function(err){
+    req.flash('info', 'Deleted successfully')
+    res.redirect('/artworks')
   })
 }

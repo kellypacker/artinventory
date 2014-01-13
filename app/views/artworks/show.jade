@@ -1,0 +1,30 @@
+extends ../layouts/default
+
+block main
+  h1= artwork.title
+
+block content
+  .row
+    .col-md-8
+      p=artwork.body
+      .meta
+
+        - if (artwork.tags)
+          p Tags &nbsp;
+            - each tag in artwork.tags.split(',')
+              i.muted.fa.fa-tag &nbsp;
+              a.tag(href="/tags/"+tag)= tag
+              | &nbsp;&nbsp;
+
+        p.muted= formatDate(artwork.createdAt, "%b %d, %Y at %I:%M %p")
+
+    .col-md-4
+      - if (!artwork.isNew && artwork.image && artwork.image.files && artwork.image.files.length)
+        img(src=artwork.image.cdnUri + '/mini_' + artwork.image.files[0])
+
+  form(action="/artworks/"+artwork.id, method="post", onsubmit="return confirm('Are you sure?')")
+    input(type='hidden', name='_csrf', value="#{csrf_token}")
+    a.btn.btn-default(href='/artworks/'+artwork._id+'/edit', title="edit") Edit
+    | &nbsp;
+    input(type="hidden", name="_method", value="DELETE")
+    button.btn.btn-danger(type="submit") Delete
