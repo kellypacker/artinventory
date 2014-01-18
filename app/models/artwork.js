@@ -33,7 +33,12 @@ var setTags = function (tags) {
 
 var ArtworkSchema = new Schema({
   title: {type : String, default : '', trim : true},
+  longTitle: {type : String, default : '', trim : true},
   tags: {type: [], get: getTags, set: setTags},
+  refImage: {
+    cdnUri: String,
+    files: []
+  },
   image: {
     cdnUri: String,
     files: []
@@ -47,9 +52,12 @@ var ArtworkSchema = new Schema({
   etsyOptions: {type: String},
   year: {type: Number},
   sold: {type: Boolean},
+  soldAt: {type : Date, default : Date.now},
+  soldTo: {type : String},
+  amountSalesTaxPaid: {type : Number},
+  salesTaxPaidDate: {type : Date, default : Date.now},
   saleNotes: {type: String},
   notes: {type: String}
-
 })
 
 /**
@@ -93,7 +101,6 @@ ArtworkSchema.methods = {
 
     var imager = new Imager(imagerConfig, 'S3')
     var self = this
-
     imager.upload(images, function (err, cdnUri, files) {
       if (err) return cb(err)
       if (files.length) {
@@ -140,9 +147,25 @@ ArtworkSchema.statics = {
       .skip(options.perPage * options.page)
       .exec(cb)
   },
-
-  getMediums: ["acrylic on wood panel", "oil pastel on paper"],
+  getMediums: [
+    "oil pastel on paper",
+    "oil pastel on matboard/wood panel",
+    "acrylic on matboard",
+    "acrylic",
+    "acrylic on canvas",
+    "acrylic on wood panel",
+    "acrylic on paper",
+    "oil pastel and colored pencil on paper",
+    "mixed media on paper",
+    "mixed media on matboard",
+    "mixed media on wood panel",
+    "wood block print",
+    "video installation",
+    "mural",
+    "gauche, oil pastel on paper"
+  ],
   getEtsyOptions: ["Giclée prints are available in my Etsy store", "Original artwork available in my Etsy store"],
+  soldToOptions: [ "Etsy", "Enso", "Private", "Danforth Gallery", "Basement Gallery" ],
   getYears: function (argument) {
     var years = [];
     var startYear = 2001;

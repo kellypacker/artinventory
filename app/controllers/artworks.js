@@ -14,7 +14,6 @@ var extend = require('util')._extend;
 
 exports.load = function(req, res, next, id){
   // var User = mongoose.model('User')
-  console.log("LOAD")
   Artwork.load(id, function (err, artwork) {
     if (err) return next('err')
     if (!artwork) return next(new Error('not found'))
@@ -60,6 +59,7 @@ exports.new = function(req, res){
     artwork: artwork,
     mediums: Artwork.getMediums,
     etsyOptions: Artwork.getEtsyOptions,
+    soldTo: Artwork.soldToOptions,
     years: Artwork.getYears()
   })
 }
@@ -95,6 +95,7 @@ exports.edit = function (req, res) {
     artwork: req.artwork,
     mediums: Artwork.getMediums,
     etsyOptions: Artwork.getEtsyOptions,
+    soldTo: Artwork.soldToOptions,
     years: Artwork.getYears()
   })
 }
@@ -106,14 +107,17 @@ exports.edit = function (req, res) {
 exports.update = function(req, res){
   var artwork = req.artwork
   artwork = extend(artwork, req.body)
-
+  console.log(artwork)
+  artwork.sold = req.body.sold == undefined ? false : true;
+  artwork.availableOnEtsy = req.body.availableOnEtsy == undefined ? false : true;
   artwork.uploadAndSave(req.files.image, function(err) {
+    console.log(err)
     if (!err) {
       return res.redirect('/artworks/')
     }
 
     res.render('artworks/edit', {
-      title: 'Edit Article',
+      title: 'Edit Artwork',
       artwork: artwork,
       errors: err.errors
     })

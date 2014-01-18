@@ -24,8 +24,9 @@ module.exports = {
       key: 'AKIAJGRRCEMUOFUXOHYQ',
       secret: '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',
       bucket: 'kellypackercom',
-      region: 'REGION'
-    }
+      secure: false
+    },
+    uploadDirectory: 'artinventory/'
   },
 
   debug: true

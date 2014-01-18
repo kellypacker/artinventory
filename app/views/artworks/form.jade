@@ -23,6 +23,11 @@ block content
             input.form-control(type='text', name="title", value=artwork.title, placeholder='Enter the title')
 
         .form-group
+          label.col-sm-2.control-label(for='longTitle') Title
+          .col-sm-10
+            textarea.form-control(name="longTitle", value=artwork.longTitle, placeholder='Long title', rows='5')
+
+        .form-group
           label.col-sm-2.control-label(for='medium') Medium
           .col-sm-10
             select.form-control(name="medium")
@@ -69,14 +74,41 @@ block content
             input(type='checkbox', value=artwork.sold, name='sold', checked=(artwork.sold ? "checked" : undefined))
 
         .form-group
+          label.col-sm-2.control-label(for='soldAt') Sold Date
+          .col-sm-10
+            input.form-control(type='date', name="soldAt", value=artwork.soldAt, placeholder='Enter the sold date')
+
+        .form-group
+          label.col-sm-2.control-label(for='soldTo') Sold To
+          .col-sm-10
+            select.form-control(name='soldTo')
+              for party in soldTo
+                option(selected=artwork.soldTo == party) #{party}
+
+        .form-group
+          label.col-sm-2.control-label(for='amountSalesTaxPaid') Amount of state sales tax paid
+          .col-sm-10
+            input.form-control(type='text', name="amountSalesTaxPaid", value=artwork.amountSalesTaxPaid, placeholder='Enter the amount of tax paid')
+
+        .form-group
+          label.col-sm-2.control-label(for='salesTaxPaidDate') Date state sales tax was paid
+          .col-sm-10
+            input.form-control(type='date', name="salesTaxPaidDate", value=artwork.salesTaxPaidDate, placeholder='Date state sales tax was paid')
+
+        .form-group
           label.col-sm-2.control-label(for='saleNotes') Sale Notes
           .col-sm-10
-              textarea.form-control(name="saleNotes", value=artwork.saleNotes, placeholder='Sale notes', rows='5')
+            textarea.form-control(name="saleNotes", value=artwork.saleNotes, placeholder='Sale notes', rows='5')
 
         .form-group
           label.col-sm-2.control-label(for='notes') Notes
           .col-sm-10
-              textarea.form-control(name="notes", value=artwork.notes, placeholder='Enter the notes', rows='5')
+            textarea.form-control(name="notes", value=artwork.notes, placeholder='Enter the notes', rows='5')
+
+        .form-group
+          label.col-sm-2.control-label(for='file') Reference Image
+          .col-sm-10
+            input.form-control#file(type='file', name="refImage[]")
 
         .form-group
           label.col-sm-2.control-label(for='file') Image
@@ -96,4 +128,4 @@ block content
 
     .col-md-4
       - if (!artwork.isNew && artwork.image && artwork.image.files && artwork.image.files.length)
-        img(src=artwork.image.cdnUri + "/mini_" + artwork.image.files[0])
+        img(src=artwork.image.cdnUri + "/artinventory" + "/mini_" + artwork.image.files[0])

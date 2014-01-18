@@ -20,7 +20,7 @@ block content
 
     .col-md-4
       - if (!artwork.isNew && artwork.image && artwork.image.files && artwork.image.files.length)
-        img(src=artwork.image.cdnUri + '/mini_' + artwork.image.files[0])
+        img(src=artwork.image.cdnUri + '/artinventory' + '/mini_' + artwork.image.files[0])
 
   form(action="/artworks/"+artwork.id, method="post", onsubmit="return confirm('Are you sure?')")
     input(type='hidden', name='_csrf', value="#{csrf_token}")
