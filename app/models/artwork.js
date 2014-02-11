@@ -5,18 +5,18 @@
 
 var mongoose = require('mongoose');
 var Imager = require('imager');
-var env = process.env.NODE_ENV || 'development'
-var config = require('../../config/config')[env]
-var imagerConfig = require(config.root + '/config/imager.js')
-var Schema = mongoose.Schema
-var utils = require('../../lib/utils')
+var env = process.env.NODE_ENV || 'development';
+var config = require('../../config/config')[env];
+var imagerConfig = require(config.root + '/config/imager.js');
+var Schema = mongoose.Schema;
+var utils = require('../../lib/utils');
 
 /**
  * Getters
  */
 
 var getTags = function (tags) {
-  return tags.join(',')
+  return tags.join(',');
 }
 
 /**
@@ -24,7 +24,7 @@ var getTags = function (tags) {
  */
 
 var setTags = function (tags) {
-  return tags.split(',')
+  return tags.split(',');
 }
 
 /**
@@ -35,10 +35,6 @@ var ArtworkSchema = new Schema({
   title: {type : String, default : '', trim : true},
   longTitle: {type : String, default : '', trim : true},
   tags: {type: [], get: getTags, set: setTags},
-  refImage: {
-    cdnUri: String,
-    files: []
-  },
   image: {
     cdnUri: String,
     files: []
@@ -58,7 +54,7 @@ var ArtworkSchema = new Schema({
   salesTaxPaidDate: {type : Date, default : Date.now},
   saleNotes: {type: String},
   notes: {type: String}
-})
+});
 
 /**
  * Validations
@@ -71,16 +67,16 @@ ArtworkSchema.path('title').required(true, 'Artwork title cannot be blank');
  */
 
 ArtworkSchema.pre('remove', function (next) {
-  var imager = new Imager(imagerConfig, 'S3')
-  var files = this.image.files
+  var imager = new Imager(imagerConfig, 'S3');
+  var files = this.image.files;
 
   // if there are files associated with the item, remove from the cloud too
   imager.remove(files, function (err) {
-    if (err) return next(err)
-  }, 'artwork')
+    if (err) return next(err);
+  }, 'artwork');
 
-  next()
-})
+  next();
+});
 
 /**
  * Methods
@@ -97,17 +93,16 @@ ArtworkSchema.methods = {
    */
 
   uploadAndSave: function (images, cb) {
-    if (!images || !images.length) return this.save(cb)
-
-    var imager = new Imager(imagerConfig, 'S3')
-    var self = this
+    if (!images || !images.length) return this.save(cb);
+    var imager = new Imager(imagerConfig, 'S3');
+    var self = this;
     imager.upload(images, function (err, cdnUri, files) {
-      if (err) return cb(err)
+      if (err) return cb(err);
       if (files.length) {
         self.image = { cdnUri : cdnUri, files : files }
       }
-      self.save(cb)
-    }, 'artwork')
+      self.save(cb);
+    }, 'artwork');
   },
 }
 

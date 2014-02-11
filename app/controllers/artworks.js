@@ -15,10 +15,10 @@ var extend = require('util')._extend;
 exports.load = function(req, res, next, id){
   // var User = mongoose.model('User')
   Artwork.load(id, function (err, artwork) {
-    if (err) return next('err')
-    if (!artwork) return next(new Error('not found'))
-    req.artwork = artwork
-    next()
+    if (err) return next('err');
+    if (!artwork) return next(new Error('not found'));
+    req.artwork = artwork;
+    next();
   })
 }
 
@@ -27,24 +27,23 @@ exports.load = function(req, res, next, id){
  */
 
 exports.index = function(req, res){
-  var page = (req.param('page') > 0 ? req.param('page') : 1) - 1
-  var perPage = 30
+  var page = (req.param('page') > 0 ? req.param('page') : 1) - 1;
+  var perPage = 30;
   var options = {
     perPage: perPage,
     page: page
   }
   Artwork.list(options, function(err, artworks) {
-    console.log(err)
-    if (err) return res.render('500')
+    if (err) return res.render('500');
     Artwork.count().exec(function (err, count) {
       res.render('artworks/index', {
         title: 'Artwork',
         artworks: artworks,
         page: page + 1,
         pages: Math.ceil(count / perPage)
-      })
-    })
-  })
+      });
+    });
+  });
 }
 
 /**
@@ -53,7 +52,6 @@ exports.index = function(req, res){
 
 exports.new = function(req, res){
   var artwork = new Artwork({});
-  console.log(Artwork.getMediums)
   res.render('artworks/new', {
     title: 'New Artwork',
     artwork: artwork,
@@ -61,7 +59,7 @@ exports.new = function(req, res){
     etsyOptions: Artwork.getEtsyOptions,
     soldTo: Artwork.soldToOptions,
     years: Artwork.getYears()
-  })
+  });
 }
 
 /**
@@ -69,20 +67,20 @@ exports.new = function(req, res){
  */
 
 exports.create = function (req, res) {
-  var artwork = new Artwork(req.body)
+  var artwork = new Artwork(req.body);
 
   artwork.uploadAndSave(req.files.image, function (err) {
     if (!err) {
-      req.flash('success', 'Successfully created artwork!')
-      return res.redirect('/artworks/'+artwork._id)
+      req.flash('success', 'Successfully created artwork!');
+      return res.redirect('/artworks/'+artwork._id);
     }
 
     res.render('artworks/new', {
       title: 'New Artwork',
       artwork: artwork,
       errors: utils.errors(err.errors || err)
-    })
-  })
+    });
+  });
 }
 
 /**
@@ -97,7 +95,7 @@ exports.edit = function (req, res) {
     etsyOptions: Artwork.getEtsyOptions,
     soldTo: Artwork.soldToOptions,
     years: Artwork.getYears()
-  })
+  });
 }
 
 /**
@@ -105,23 +103,21 @@ exports.edit = function (req, res) {
  */
 
 exports.update = function(req, res){
-  var artwork = req.artwork
-  artwork = extend(artwork, req.body)
-  console.log(artwork)
+  var artwork = req.artwork;
+  artwork = extend(artwork, req.body);
   artwork.sold = req.body.sold == undefined ? false : true;
   artwork.availableOnEtsy = req.body.availableOnEtsy == undefined ? false : true;
   artwork.uploadAndSave(req.files.image, function(err) {
-    console.log(err)
     if (!err) {
-      return res.redirect('/artworks/')
+      return res.redirect('/artworks/');
     }
 
     res.render('artworks/edit', {
       title: 'Edit Artwork',
       artwork: artwork,
       errors: err.errors
-    })
-  })
+    });
+  });
 }
 
 /**
@@ -140,9 +136,9 @@ exports.show = function(req, res){
  */
 
 exports.destroy = function(req, res){
-  var artwork = req.artwork
+  var artwork = req.artwork;
   artwork.remove(function(err){
-    req.flash('info', 'Deleted successfully')
-    res.redirect('/artworks')
+    req.flash('info', 'Deleted successfully');
+    res.redirect('/artworks');
   })
 }
