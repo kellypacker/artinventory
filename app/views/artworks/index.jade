@@ -1,27 +1,41 @@
 extends ../layouts/default
 
 block main
+  a(href="/artworks/new", class="btn btn-default pull-right") new artwork
   h1= title
 
 block content
-  a(href="/artworks/new") new artwork
   - if (artworks.length)
-    - each artwork in artworks
-      .artwork
-        h3
-          a(href='/artworks/'+artwork._id, title=artwork.title) #{artwork.title}
-
-        .meta
-          span.muted= formatDate(artwork.createdAt)
-
-          - if (artwork.tags)
-            | &nbsp; - &nbsp;
-            span Tags &nbsp;
-            - each tag in artwork.tags.split(',')
-              i.muted.fa.fa-tag &nbsp;
-              a.tag(href="/tags/"+tag)= tag
-              | &nbsp;&nbsp;
-
+    table.artwork-list.table
+      thead
+        tr
+          th Title
+          th Year
+          th Sold
+          th Date created
+          th Tags
+          th Image
+      - each artwork in artworks
+        tr
+          td
+            h3
+              a(href='/artworks/'+artwork._id+'/edit', title="edit") #{artwork.title}
+          td
+            = artwork.year
+          td
+            = artwork.sold
+          td
+            .meta
+              span.muted= formatDate(artwork.createdAt)
+          td
+            - if (artwork.tags)
+              - each tag in artwork.tags.split(',')
+                i.muted.fa.fa-tag &nbsp;
+                a.tag(href="/tags/"+tag)= tag
+                | &nbsp;&nbsp;
+          td
+            - if (artwork.image && artwork.image.files && artwork.image.files.length)
+              img(src=artwork.image.cdnUri + '/artinventory' + '/mini_' + artwork.image.files[0])
     - if (pages > 1)
       ul.pagination
         != createPagination(pages, page)
