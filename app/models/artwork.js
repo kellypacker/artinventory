@@ -53,7 +53,8 @@ var ArtworkSchema = new Schema({
   amountSalesTaxPaid: {type : Number},
   salesTaxPaidDate: {type : Date, default : Date.now},
   saleNotes: {type: String},
-  notes: {type: String}
+  notes: {type: String},
+  showOnWebsite: {type: Boolean}
 });
 
 /**

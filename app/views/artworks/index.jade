@@ -12,6 +12,8 @@ block content
           th Title
           th Year
           th Sold
+          th Website
+          th soldTo
           th Date created
           th Tags
           th Image
@@ -24,6 +26,10 @@ block content
             = artwork.year
           td
             = artwork.sold
+          td
+            = artwork.showOnWebsite
+          td
+            = artwork.soldTo
           td
             .meta
               span.muted= formatDate(artwork.createdAt)
