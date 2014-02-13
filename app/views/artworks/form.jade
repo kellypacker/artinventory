@@ -24,7 +24,8 @@ block content
         .form-group
           label.col-sm-3.control-label(for='longTitle') Long Title
           .col-sm-9
-            textarea.form-control(name="longTitle", value=artwork.longTitle, placeholder='Long title', rows='5')
+            textarea.form-control(name="longTitle", placeholder='Long title', rows='5')
+              =artwork.longTitle
 
         .form-group
           label.col-sm-3.control-label(for='medium') Medium
@@ -99,12 +100,14 @@ block content
         .form-group
           label.col-sm-3.control-label(for='saleNotes') Sale Notes
           .col-sm-9
-            textarea.form-control(name="saleNotes", value=artwork.saleNotes, placeholder='Sale notes', rows='5')
+            textarea.form-control(name="saleNotes", rows='5')
+              =artwork.saleNotes
 
         .form-group
           label.col-sm-3.control-label(for='notes') Notes
           .col-sm-9
-            textarea.form-control(name="notes", value=artwork.notes, placeholder='Enter the notes', rows='5')
+            textarea.form-control(name="notes", rows='5')
+              =artwork.notes
 
         .form-group
           label.col-sm-3.control-label(for='file') Image

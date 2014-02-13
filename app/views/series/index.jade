@@ -1,7 +1,7 @@
 extends ../layouts/default
 
 block main
-  a(href="/series/new", class="btn btn-default pull-right") new art group
+  a(href="/series/new", class="btn btn-default pull-right") new art series
   h1= title
 
 block content
@@ -11,6 +11,7 @@ block content
         tr
           th Title
           th Description
+          th long
           th Date created
           th show on website
           th Image
@@ -24,8 +25,7 @@ block content
           td
             = artGroup.showOnWebsite
           td
-            .meta
-              span.muted= formatDate(artGroup.createdAt)
+            = formatDate(artGroup.createdAt)
           td
             - if (artGroup.image && artGroup.image.files && artGroup.image.files.length)
               img(src=artGroup.image.cdnUri + '/artinventory' + '/mini_' + artGroup.image.files[0])

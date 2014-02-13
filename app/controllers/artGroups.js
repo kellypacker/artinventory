@@ -85,6 +85,7 @@ exports.create = function (req, res) {
  */
 
 exports.edit = function (req, res) {
+  console.log(req.artGroup)
   res.render('series/edit', {
     title: 'Edit ' + req.artGroup.name,
     artGroup: req.artGroup
@@ -98,8 +99,6 @@ exports.edit = function (req, res) {
 exports.update = function(req, res){
   var artGroup = req.artGroup;
   artGroup = extend(artGroup, req.body);
-  artGroup.sold = req.body.sold == undefined ? false : true;
-  artGroup.availableOnEtsy = req.body.availableOnEtsy == undefined ? false : true;
   artGroup.uploadAndSave(req.files.image, function(err) {
     if (!err) {
       return res.redirect('/series/');

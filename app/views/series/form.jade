@@ -24,8 +24,8 @@ block content
         .form-group
           label.col-sm-3.control-label(for='description') Description
           .col-sm-9
-            textarea.form-control(name="description", value=artGroup.description, placeholder='Description', rows='5')
-
+            textarea.form-control(name="description", placeholder='Description', rows='5')
+              = artGroup.description
         .form-group
           label.col-sm-3.control-label(for='file') Image
           .col-sm-9
