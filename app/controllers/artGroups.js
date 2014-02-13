@@ -34,12 +34,12 @@ exports.index = function(req, res){
     perPage: perPage,
     page: page
   }
-  Artwork.list(options, function(err, artworks) {
+  ArtGroup.list(options, function(err, artGroups) {
     if (err) return res.render('500');
-    Artwork.count().exec(function (err, count) {
-      res.render('artworks/index', {
-        title: 'Artwork',
-        artworks: artworks,
+    ArtGroup.count().exec(function (err, count) {
+      res.render('series/index', {
+        title: 'ArtGroup',
+        artGroups: artGroups,
         page: page + 1,
         pages: Math.ceil(count / perPage)
       });
@@ -60,21 +60,21 @@ exports.new = function(req, res){
 }
 
 /**
- * Create an artwork
+ * Create an ArtGroup
  */
 
 exports.create = function (req, res) {
-  var artwork = new Artwork(req.body);
+  var artGroup = new ArtGroup(req.body);
 
-  artwork.uploadAndSave(req.files.image, function (err) {
+  artGroup.uploadAndSave(req.files.image, function (err) {
     if (!err) {
-      req.flash('success', 'Successfully created artwork!');
-      return res.redirect('/artworks/'+artwork._id);
+      req.flash('success', 'Successfully created art group!');
+      return res.redirect('/series/'+artGroup._id);
     }
 
-    res.render('artworks/new', {
-      title: 'New Artwork',
-      artwork: artwork,
+    res.render('series/new', {
+      title: 'New Art Group',
+      artGroup: artGroup,
       errors: utils.errors(err.errors || err)
     });
   });

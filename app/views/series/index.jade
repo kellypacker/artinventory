@@ -1,0 +1,37 @@
+extends ../layouts/default
+
+block main
+  a(href="/series/new", class="btn btn-default pull-right") new art group
+  h1= title
+
+block content
+  - if (artGroups.length)
+    table.art-group-list.table.entries-list
+      thead
+        tr
+          th Title
+          th Description
+          th Date created
+          th show on website
+          th Image
+      - each artGroup in artGroups
+        tr
+          td
+            h3
+              a(href='/series/'+artGroup._id+'/edit', title="edit") #{artGroup.name}
+          td
+            = artGroup.description
+          td
+            = artGroup.showOnWebsite
+          td
+            .meta
+              span.muted= formatDate(artGroup.createdAt)
+          td
+            - if (artGroup.image && artGroup.image.files && artGroup.image.files.length)
+              img(src=artGroup.image.cdnUri + '/artinventory' + '/mini_' + artGroup.image.files[0])
+    - if (pages > 1)
+      ul.pagination
+        != createPagination(pages, page)
+  - else
+    h4.muted No art groups.&nbsp;
+      a(href="/series/new") create one

@@ -97,7 +97,7 @@ ArtGroupSchema.statics = {
   },
 
   /**
-   * List artGroupss
+   * List artGroups
    *
    * @param {Object} options
    * @param {Function} cb
@@ -117,4 +117,4 @@ ArtGroupSchema.statics = {
 
 }
 
-mongoose.model('ArtGroup', ArtGroupSchema)
+mongoose.model('ArtGroup', ArtGroupSchema);
