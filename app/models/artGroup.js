@@ -92,6 +92,7 @@ ArtGroupSchema.statics = {
    */
 
   load: function (id, cb) {
+    console.log(id)
     this.findOne({ _id : id })
       .exec(cb)
   },

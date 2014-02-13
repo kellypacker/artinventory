@@ -4,7 +4,7 @@
  */
 
 var mongoose = require('mongoose');
-var Artwork = mongoose.model('Artwork');
+// var Artwork = mongoose.model('Artwork');
 var ArtGroup = mongoose.model('ArtGroup');
 var utils = require('../../lib/utils');
 var extend = require('util')._extend;
@@ -15,6 +15,7 @@ var extend = require('util')._extend;
 
 exports.load = function(req, res, next, id){
   // var User = mongoose.model('User')
+  console.log(id)
   ArtGroup.load(id, function (err, artGroup) {
     if (err) return next('err');
     if (!artGroup) return next(new Error('not found'));
@@ -48,7 +49,7 @@ exports.index = function(req, res){
 }
 
 /**
- * New artwork
+ * New art group
  */
 
 exports.new = function(req, res){
@@ -81,37 +82,33 @@ exports.create = function (req, res) {
 }
 
 /**
- * Edit an artwork
+ * Edit an art group
  */
 
 exports.edit = function (req, res) {
-  res.render('artworks/edit', {
-    title: 'Edit ' + req.artwork.title,
-    artwork: req.artwork,
-    mediums: Artwork.getMediums,
-    etsyOptions: Artwork.getEtsyOptions,
-    soldTo: Artwork.soldToOptions,
-    years: Artwork.getYears()
+  res.render('series/edit', {
+    title: 'Edit ' + req.artGroup.name,
+    artGroup: req.artGroup
   });
 }
 
 /**
- * Update artwork
+ * Update art group
  */
 
 exports.update = function(req, res){
-  var artwork = req.artwork;
-  artwork = extend(artwork, req.body);
-  artwork.sold = req.body.sold == undefined ? false : true;
-  artwork.availableOnEtsy = req.body.availableOnEtsy == undefined ? false : true;
-  artwork.uploadAndSave(req.files.image, function(err) {
+  var artGroup = req.artGroup;
+  artGroup = extend(artGroup, req.body);
+  artGroup.sold = req.body.sold == undefined ? false : true;
+  artGroup.availableOnEtsy = req.body.availableOnEtsy == undefined ? false : true;
+  artGroup.uploadAndSave(req.files.image, function(err) {
     if (!err) {
-      return res.redirect('/artworks/');
+      return res.redirect('/series/');
     }
 
-    res.render('artworks/edit', {
-      title: 'Edit Artwork',
-      artwork: artwork,
+    res.render('series/edit', {
+      title: 'Edit Art Group',
+      artGroup: artGroup,
       errors: err.errors
     });
   });
@@ -122,9 +119,9 @@ exports.update = function(req, res){
  */
 
 exports.show = function(req, res){
-  res.render('artworks/show', {
-    title: req.artwork.title,
-    artwork: req.artwork
+  res.render('series/show', {
+    title: req.artGroup.name,
+    artGroup: req.artGroup
   })
 }
 
@@ -133,9 +130,9 @@ exports.show = function(req, res){
  */
 
 exports.destroy = function(req, res){
-  var artwork = req.artwork;
-  artwork.remove(function(err){
+  var artGroup = req.artGroup;
+  artGroup.remove(function(err){
     req.flash('info', 'Deleted successfully');
-    res.redirect('/artworks');
+    res.redirect('/series');
   })
 }
