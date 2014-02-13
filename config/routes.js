@@ -14,10 +14,11 @@ var passportOptions = {
  */
 
 // var users = require('../app/controllers/users')
-var artworks = require('../app/controllers/artworks')
+var artworks = require('../app/controllers/artworks');
+var series = require('../app/controllers/artGroups');
 // var auth = require('./middlewares/authorization')
 
-var home = require('home')
+var home = require('home');
 
 /**
  * Expose
@@ -34,6 +35,8 @@ module.exports = function (app, passport) {
   app.get('/artworks/:id/edit', artworks.edit)
   app.put('/artworks/:id', artworks.update)
   app.del('/artworks/:id', artworks.destroy)
+
+  app.get('/series/new', series.new)
 
   // home route
   app.get('/', artworks.index)

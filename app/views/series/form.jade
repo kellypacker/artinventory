@@ -1,0 +1,54 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - var action = '/series'
+  - action += artGroup.isNew? '' : '/' + artGroup.id
+
+  .row
+    .col-md-12
+      form.form-horizontal(method="post", action=action, enctype="multipart/form-data", role="form", class="art-group-edit")
+
+        input(type="hidden", name="_csrf", value="#{csrf_token}")
+
+        - if (!artGroup.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        .form-group
+          label.col-sm-3.control-label(for='name') Name
+          .col-sm-9
+            input.form-control(type='text', name="name", value=artGroup.name, placeholder='Enter the title')
+
+        .form-group
+          label.col-sm-3.control-label(for='description') Description
+          .col-sm-9
+            textarea.form-control(name="description", value=artGroup.description, placeholder='Description', rows='5')
+
+        .form-group
+          label.col-sm-3.control-label(for='file') Image
+          .col-sm-9
+            input.form-control#file(type='file', name="image[]")
+
+        - if (!artGroup.isNew && artGroup.image && artGroup.image.files && artGroup.image.files.length)
+          .form-group
+            .col-sm-9.col-sm-offset-3
+              img(src=artGroup.image.cdnUri + "/artinventory" + "/mini_" + artGroup.image.files[0])
+
+        .form-group
+          .col-sm-9.col-sm-offset-3
+            h3 Website
+
+        .form-group
+          label.col-sm-3.control-label(for='showOnWebsite') Show on website?
+          .col-sm-9
+            input(type='checkbox', value=artGroup.showOnWebsite, name='showOnWebsite', checked=(artGroup.showOnWebsite ? "checked" : undefined))
+
+        hr
+        .form-group
+          .col-sm-offset-2.col-sm-9
+            button.btn.btn-primary(type='submit') Save
+            | &nbsp;
+            a.btn(href='/series', title="cancel") Cancel
+
