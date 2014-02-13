@@ -15,7 +15,6 @@ var extend = require('util')._extend;
 
 exports.load = function(req, res, next, id){
   // var User = mongoose.model('User')
-  console.log(id)
   ArtGroup.load(id, function (err, artGroup) {
     if (err) return next('err');
     if (!artGroup) return next(new Error('not found'));
@@ -39,7 +38,7 @@ exports.index = function(req, res){
     if (err) return res.render('500');
     ArtGroup.count().exec(function (err, count) {
       res.render('series/index', {
-        title: 'ArtGroup',
+        title: 'Art Series',
         artGroups: artGroups,
         page: page + 1,
         pages: Math.ceil(count / perPage)
