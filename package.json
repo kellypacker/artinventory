@@ -15,7 +15,7 @@
     "test": "make test"
   },
   "dependencies": {
-    "express": "latest",
+    "express": "3.3.7",
     "express-namespace": "latest",
     "mongoose": "latest",
     "mongoose-user": "latest",
@@ -27,14 +27,23 @@
     "view-helpers": "latest",
     "jade": "latest",
     "async": "latest",
-    "forever": "latest"
+    "forever": "latest",
+    "express-session": "^1.0.2",
+    "cookie-parser": "^1.0.1",
+    "serve-static": "^1.0.4",
+    "static-favicon": "^1.0.2",
+    "morgan": "^1.0.0",
+    "body-parser": "^1.0.1",
+    "method-override": "^1.0.0",
+    "csurf": "^1.1.0",
+    "connect": "^2.14.4"
   },
   "devDependencies": {
     "nodemon": "latest",
     "mocha": "latest",
     "should": "latest",
     "supertest": "latest",
-    "imager": "~0.2.3"
+    "imager": "latest"
   },
   "keywords": [
     "mvc",
