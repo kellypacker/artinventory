@@ -39,6 +39,7 @@ identify test.png
 identify -list format
 ```
 
+If further issues with imagemagick, try this: http://cactuslab.com/imagemagick/
 
 ## License
 
