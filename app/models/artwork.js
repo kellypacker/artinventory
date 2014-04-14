@@ -94,14 +94,21 @@ ArtworkSchema.methods = {
    */
 
   uploadAndSave: function (images, cb) {
+    console.log("^^^^")
+    console.log(images);
+    console.log(images.length)
     if (!images || !images.length) return this.save(cb);
     var imager = new Imager(imagerConfig, 'S3');
     var self = this;
     imager.upload(images, function (err, cdnUri, files) {
+      console.log("error")
+      console.log(cdnUri);
+      console.log(files);
       if (err) return cb(err);
       if (files.length) {
         self.image = { cdnUri : cdnUri, files : files }
       }
+      console.log("saving")
       self.save(cb);
     }, 'artwork');
   },
