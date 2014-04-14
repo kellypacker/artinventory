@@ -111,12 +111,13 @@ exports.update = function(req, res){
     if (!err) {
       return res.redirect('/artworks/');
     }
-
-    res.render('artworks/edit', {
-      title: 'Edit Artwork',
-      artwork: artwork,
-      errors: err.errors
-    });
+    // changed to redirect to list because it was trying to pull in mediums and things
+    res.redirect('/artworks/');
+    // res.render('artworks/', {
+    //   title: 'Edit Artwork',
+    //   artwork: artwork,
+    //   errors: err.errors
+    // });
   });
 }
 
