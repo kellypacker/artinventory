@@ -69,7 +69,7 @@ exports.create = function (req, res) {
   artGroup.uploadAndSave(req.files.image, function (err) {
     if (!err) {
       req.flash('success', 'Successfully created art group!');
-      return res.redirect('/series/'+artGroup._id);
+      return res.redirect('/series/');
     }
 
     res.render('series/new', {

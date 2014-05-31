@@ -11,8 +11,6 @@ block content
         tr
           th Title
           th Description
-          th long
-          th Date created
           th show on website
           th Image
       - each artGroup in artGroups
@@ -25,10 +23,8 @@ block content
           td
             = artGroup.showOnWebsite
           td
-            = formatDate(artGroup.createdAt)
-          td
             - if (artGroup.image && artGroup.image.files && artGroup.image.files.length)
-              img(src=artGroup.image.cdnUri + '/artinventory' + '/mini_' + artGroup.image.files[0])
+              img(src=artGroup.image.cdnUri + '/artinventory' + '/thumb_' + artGroup.image.files[0])
     - if (pages > 1)
       ul.pagination
         != createPagination(pages, page)
