@@ -41,6 +41,14 @@ identify -list format
 
 If further issues with imagemagick, try this: http://cactuslab.com/imagemagick/
 
+## To-dos
+* Ability to upload multiple images (thumb, snapshots)
+* Implement tags
+* Reimplement users
+* Create series feed
+* Create artwork feed
+
+
 ## License
 
 MIT
