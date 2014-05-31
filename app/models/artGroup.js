@@ -105,15 +105,15 @@ ArtGroupSchema.statics = {
    */
 
   list: function (options, cb) {
-    var criteria = options.criteria || {}
-    this.find(criteria)
+    var options = options || {};
+    var criteria = options.criteria || {};
+    var groups = this.find(criteria)
       //.populate('title', 'title')
       .sort({'createdAt': -1}) // sort by date
       .limit(options.perPage)
       .skip(options.perPage * options.page)
-      .exec(cb)
+      .exec(cb);
   }
-
 
 }
 

@@ -10,7 +10,6 @@ block content
       thead
         tr
           th Title
-          th Year
           th Sold
           th Website
           th soldTo
@@ -22,8 +21,6 @@ block content
           td
             h3
               a(href='/artworks/'+artwork._id+'/edit', title="edit") #{artwork.title}
-          td
-            = artwork.year
           td
             = artwork.sold
           td

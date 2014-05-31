@@ -5,6 +5,7 @@
 
 var mongoose = require('mongoose');
 var Artwork = mongoose.model('Artwork');
+var ArtGroup = mongoose.model('ArtGroup');
 var utils = require('../../lib/utils');
 var extend = require('util')._extend;
 
@@ -52,14 +53,18 @@ exports.index = function(req, res){
 
 exports.new = function(req, res){
   var artwork = new Artwork({});
-  res.render('artworks/new', {
-    title: 'New Artwork',
-    artwork: artwork,
-    mediums: Artwork.getMediums,
-    etsyOptions: Artwork.getEtsyOptions,
-    soldTo: Artwork.soldToOptions,
-    years: Artwork.getYears()
-  });
+  var getAssetsForNewArtwork = function (err, artGroups) {
+    res.render('artworks/new', {
+      title: 'New Artwork',
+      artwork: artwork,
+      mediums: Artwork.getMediums,
+      etsyOptions: Artwork.getEtsyOptions,
+      soldTo: Artwork.soldToOptions,
+      years: Artwork.getYears(),
+      artGroups: artGroups
+    });
+  };
+  var artGroups = ArtGroup.list({}, getAssetsForNewArtwork);
 }
 
 /**
@@ -68,6 +73,7 @@ exports.new = function(req, res){
 
 exports.create = function (req, res) {
   var artwork = new Artwork(req.body);
+  artwork.artGroupID = req.body.artGroup;
 
   artwork.uploadAndSave(req.files.image, function (err) {
     if (!err) {
@@ -88,14 +94,18 @@ exports.create = function (req, res) {
  */
 
 exports.edit = function (req, res) {
-  res.render('artworks/edit', {
-    title: 'Edit ' + req.artwork.title,
-    artwork: req.artwork,
-    mediums: Artwork.getMediums,
-    etsyOptions: Artwork.getEtsyOptions,
-    soldTo: Artwork.soldToOptions,
-    years: Artwork.getYears()
-  });
+  var getAssetsForEditingArtwork = function (err, artGroups) {
+    res.render('artworks/edit', {
+      title: 'Edit ' + req.artwork.title,
+      artwork: req.artwork,
+      mediums: Artwork.getMediums,
+      etsyOptions: Artwork.getEtsyOptions,
+      soldTo: Artwork.soldToOptions,
+      years: Artwork.getYears(),
+      artGroups: artGroups
+    });
+  };
+  var artGroups = ArtGroup.list({}, getAssetsForEditingArtwork);
 }
 
 /**
@@ -107,17 +117,14 @@ exports.update = function(req, res){
   artwork = extend(artwork, req.body);
   artwork.sold = req.body.sold == undefined ? false : true;
   artwork.availableOnEtsy = req.body.availableOnEtsy == undefined ? false : true;
+  artwork.artGroupID = req.body.artGroup;
+  console.log(req.body.artGroup)
   artwork.uploadAndSave(req.files.image, function(err) {
     if (!err) {
       return res.redirect('/artworks/');
     }
     // changed to redirect to list because it was trying to pull in mediums and things
     res.redirect('/artworks/');
-    // res.render('artworks/', {
-    //   title: 'Edit Artwork',
-    //   artwork: artwork,
-    //   errors: err.errors
-    // });
   });
 }
 

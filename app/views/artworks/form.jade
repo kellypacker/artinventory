@@ -57,6 +57,14 @@ block content
             input.form-control(type='text', name="price", value=artwork.price, placeholder='Enter the price')
 
         .form-group
+          label.col-sm-3.control-label(for='artGroup') Art Series
+          .col-sm-9
+            select.form-control(name='artGroup')
+              option(value="")
+              for group in artGroups
+                option(value=group.id, selected=artwork.artGroupID == group.id) #{group.name}
+
+        .form-group
           label.col-sm-3.control-label(for='availableOnEtsy') Available on Etsy?
           .col-sm-9
             input(type='checkbox', value=artwork.availableOnEtsy, name="availableOnEtsy", checked=(artwork.availableOnEtsy ? "checked" : undefined))
