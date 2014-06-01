@@ -118,7 +118,16 @@ block content
               =artwork.notes
 
         .form-group
-          label.col-sm-3.control-label(for='file') Image
+          label.col-sm-3.control-label(for='file') Image Thumb
+          .col-sm-9
+            input.form-control#file(type='file', name="imageThumb[]")
+        - if (!artwork.isNew && artwork.imageThumb && artwork.imageThumb.files && artwork.imageThumb.files.length)
+          .form-group
+            .col-sm-9.col-sm-offset-3
+              img(src=artwork.imageThumb.cdnUri + "/artinventory" + "/mini_" + artwork.imageThumb.files[0])
+
+        .form-group
+          label.col-sm-3.control-label(for='image') Image
           .col-sm-9
             input.form-control#file(type='file', name="image[]")
 
