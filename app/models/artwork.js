@@ -10,6 +10,7 @@ var config = require('../../config/config')[env];
 var imagerConfig = require(config.root + '/config/imager.js');
 var Schema = mongoose.Schema;
 var utils = require('../../lib/utils');
+var imageHelpers = require('../../lib/imageHelpers');
 var RSVP = require('rsvp');
 
 /**
@@ -101,27 +102,29 @@ ArtworkSchema.methods = {
    */
 
   uploadAndSave: function (imageFields, cb) {
-    if (!imageFields || !imageFields.length) return this.save(cb);
+    if (!imageFields) return this.save(cb);
     var imager = new Imager(imagerConfig, 'S3');
     var self = this;
     var totalFilesToUpload = 0;
-    imageFields.forEach(function(oneImageField, i){
-      imager.upload([oneImageField], function (err, cdnUri, files) {
-        totalFilesToUpload++;
-        if (err) return cb(err);
-        if (files.length) {
-          console.log("saving")
-          console.log("===========")
-          console.log("field")
-          console.log(oneImageField.field)
-          self[oneImageField.field] = { cdnUri : cdnUri, files : files }
-          if (imageFields.length === totalFilesToUpload) {
-            console.log("save")
-            self.save(cb);
-          }
-        }
-      }, 'artwork');
-    });
+    var numberOfImagesToUpload = imageHelpers.getNumberOfFieldsWithImages(imageFields);
+    var checkIfAllImagesLoaded = function () {
+      console.log("cgeck")
+      console.log(numberOfImagesToUpload)
+      console.log(totalFilesToUpload)
+      if (numberOfImagesToUpload === totalFilesToUpload) {
+        self.save(cb);
+      }
+    }
+    var incrementImagesLoadedCount = function () {
+      totalFilesToUpload++;
+      checkIfAllImagesLoaded()
+    }
+    for (var oneImageField in imageFields) {
+      var oneField = imageFields[oneImageField];
+      console.log("++++++++")
+      imageHelpers.uploadImageField(oneImageField, oneField, imager, self, incrementImagesLoadedCount);
+
+    };
   },
 }
 

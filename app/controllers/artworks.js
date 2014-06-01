@@ -122,8 +122,7 @@ exports.update = function(req, res){
   req.files.image[0].field = "image"
   req.files.imageThumb[0].field = "imageThumb"
   var allImages = [req.files.image[0], req.files.imageThumb[0]]
-  console.log(allImages)
-  artwork.uploadAndSave(allImages, function(err) {
+  artwork.uploadAndSave(req.files, function(err) {
     if (!err) {
       console.log("redirect")
       return res.redirect('/artworks/');
