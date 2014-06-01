@@ -118,11 +118,18 @@ exports.update = function(req, res){
   artwork.sold = req.body.sold == undefined ? false : true;
   artwork.availableOnEtsy = req.body.availableOnEtsy == undefined ? false : true;
   artwork.artGroupID = req.body.artGroup;
-  console.log(req.body.artGroup)
-  artwork.uploadAndSave(req.files.image, function(err) {
+
+  req.files.image[0].field = "image"
+  req.files.imageThumb[0].field = "imageThumb"
+  var allImages = [req.files.image[0], req.files.imageThumb[0]]
+  console.log(allImages)
+  artwork.uploadAndSave(allImages, function(err) {
     if (!err) {
+      console.log("redirect")
       return res.redirect('/artworks/');
     }
+    console.log(err)
+    console.log("error redirect")
     // changed to redirect to list because it was trying to pull in mediums and things
     res.redirect('/artworks/');
   });

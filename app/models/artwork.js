@@ -10,6 +10,7 @@ var config = require('../../config/config')[env];
 var imagerConfig = require(config.root + '/config/imager.js');
 var Schema = mongoose.Schema;
 var utils = require('../../lib/utils');
+var RSVP = require('rsvp');
 
 /**
  * Getters
@@ -36,6 +37,10 @@ var ArtworkSchema = new Schema({
   longTitle: {type : String, default : '', trim : true},
   tags: {type: [], get: getTags, set: setTags},
   image: {
+    cdnUri: String,
+    files: []
+  },
+  imageThumb: {
     cdnUri: String,
     files: []
   },
@@ -90,22 +95,33 @@ ArtworkSchema.methods = {
   /**
    * Save artwork and upload image
    *
-   * @param {Object} images
+   * @param {Object} imageFields
    * @param {Function} cb
    * @api private
    */
 
-  uploadAndSave: function (images, cb) {
-    if (!images || !images.length) return this.save(cb);
+  uploadAndSave: function (imageFields, cb) {
+    if (!imageFields || !imageFields.length) return this.save(cb);
     var imager = new Imager(imagerConfig, 'S3');
     var self = this;
-    imager.upload(images, function (err, cdnUri, files) {
-      if (err) return cb(err);
-      if (files.length) {
-        self.image = { cdnUri : cdnUri, files : files }
-      }
-      self.save(cb);
-    }, 'artwork');
+    var totalFilesToUpload = 0;
+    imageFields.forEach(function(oneImageField, i){
+      imager.upload([oneImageField], function (err, cdnUri, files) {
+        totalFilesToUpload++;
+        if (err) return cb(err);
+        if (files.length) {
+          console.log("saving")
+          console.log("===========")
+          console.log("field")
+          console.log(oneImageField.field)
+          self[oneImageField.field] = { cdnUri : cdnUri, files : files }
+          if (imageFields.length === totalFilesToUpload) {
+            console.log("save")
+            self.save(cb);
+          }
+        }
+      }, 'artwork');
+    });
   },
 }
 
